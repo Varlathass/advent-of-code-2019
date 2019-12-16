@@ -1,0 +1,32 @@
+#!/bin/bash
+
+source session.env
+
+if [ $# -ne 1 ]; then
+    echo 'Usage: ./setup-day NUMBER'
+    echo ''
+    echo '       NUMBER: 1-25'
+    exit 1
+fi
+
+DAY=$1
+DIR=day$DAY
+
+if [ ! -d $DIR ]; then
+    mkdir $DIR
+fi
+
+cd $DIR
+declare -a filenames=(one.js two.js ANSWERS.TXT PUZZLE.txt)
+
+for file in ${filenames[@]}; do
+    if [ ! -f $file ]; then
+        touch $file
+    fi
+done
+
+curl --cookie "session=${SESSION}" https://adventofcode.com/2019/day/$DAY/input > input.txt
+
+if [ ! -f package.json ]; then
+    npm init -y
+fi
