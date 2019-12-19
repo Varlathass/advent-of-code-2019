@@ -2,14 +2,14 @@
 
 source session.env
 
-if [ $# -ne 1 ]; then
+if [ $# -ne 1 ] || [ $1 -lt 1 ] || [ $1 -gt 25 ]; then
     echo 'Usage: ./setup-day NUMBER'
     echo ''
     echo '       NUMBER: 1-25'
     exit 1
 fi
 
-DAY=$1
+DAY=$((10#$1))
 DIR=day$DAY
 
 if [ ! -d $DIR ]; then
