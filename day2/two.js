@@ -36,21 +36,35 @@ function intcode(input) {
   return output;
 }
 
-function preIntcode(input) {
+function preIntcode(input, noun, verb) {
   const output = Array.from(input);
 
-  output[1] = 12;
-  output[2] = 2;
+  output[1] = noun;
+  output[2] = verb;
 
   return output;
 }
 
-function main() {
-  const input = readContents('input.txt');
-  const preIntcodeResult = preIntcode(input);
-  const intcodeResult = intcode(preIntcodeResult);
+function findNounVerb(input, target) {
+  for (let noun = 0; noun < 100; noun += 1) {
+    for (let verb = 0; verb < 100; verb += 1) {
+      const preIntcodeResult = preIntcode(input, noun, verb);
+      const intcodeResult = intcode(preIntcodeResult);
 
-  const result = intcodeResult[0];
+      const result = intcodeResult[0];
+
+      if (result === target) return [noun, verb];
+    }
+  }
+
+  throw new Error(`No noun-verb pair found for target ${target}`);
+}
+
+function main() {
+  const target = 19690720;
+  const input = readContents('input.txt');
+  const [noun, verb] = findNounVerb(input, target);
+  const result = 100 * noun + verb;
 
   console.log(result);
 }
